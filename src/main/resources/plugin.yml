@@ -1,0 +1,12 @@
+name: PortableHorses
+version: 1.12.1
+main: com.gmail.diviegg.PortableHorses
+api-version: 1.17
+
+softdepend: [WorldGuard]
+
+commands:
+  PortableHorses:
+    description: base command for portable horses.
+    usage: /<command>
+    aliases: [ ph ]
