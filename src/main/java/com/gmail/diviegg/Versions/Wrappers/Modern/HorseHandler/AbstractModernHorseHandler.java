@@ -25,7 +25,7 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffectType;
 
 public abstract class AbstractModernHorseHandler extends AbstractHorseHandler {
-  private final Plugin ph = (Plugin)PortableHorses.getPlugin(PortableHorses.class);
+  private final Plugin ph = PortableHorses.getPlugin(PortableHorses.class);
   
   private final NamespacedKey hType = new NamespacedKey(this.ph, "hType");
   
@@ -85,7 +85,7 @@ public abstract class AbstractModernHorseHandler extends AbstractHorseHandler {
         cont = saddleMeta.getPersistentDataContainer(); 
       ItemStack freshSaddle = new ItemStack(Material.SADDLE);
       if (cont != null && cont.has(this.hType, PersistentDataType.STRING)) {
-        String type = (String)cont.get(this.hType, PersistentDataType.STRING);
+        String type = cont.get(this.hType, PersistentDataType.STRING);
         if (type != null) {
           Class vehicle = type.equals("Normal") ? Horse.class : SkeletonHorse.class;
           PersistentDataContainer finalCont = cont;
@@ -93,20 +93,20 @@ public abstract class AbstractModernHorseHandler extends AbstractHorseHandler {
                 AbstractHorse builder = (AbstractHorse)horse;
                 builder.addPotionEffect(PotionEffectType.INVISIBILITY.createEffect(999, 1));
                 if (finalCont.has(this.hName, PersistentDataType.STRING))
-                  horse.setCustomName((String)finalCont.get(this.hName, PersistentDataType.STRING)); 
+                  horse.setCustomName(finalCont.get(this.hName, PersistentDataType.STRING));
                 if (finalCont.has(this.hOwnerID, PersistentDataType.STRING))
-                  builder.setOwner((AnimalTamer)Bukkit.getPlayer(UUID.fromString((String)finalCont.get(this.hOwnerID, PersistentDataType.STRING)))); 
+                  builder.setOwner(Bukkit.getPlayer(UUID.fromString(finalCont.get(this.hOwnerID, PersistentDataType.STRING))));
                 if (finalCont.has(this.hArmor, PersistentDataType.STRING))
                   try {
-                    ItemStack armor = ItemStackHandler.ItemStackFromString((String)finalCont.get(this.hArmor, PersistentDataType.STRING));
+                    ItemStack armor = ItemStackHandler.ItemStackFromString(finalCont.get(this.hArmor, PersistentDataType.STRING));
                     ((Horse)builder).getInventory().setArmor(armor);
                   } catch (Exception e) {
-                    ((Horse)horse).getInventory().setArmor(new ItemStack(Material.valueOf((String)finalCont.get(this.hArmor, PersistentDataType.STRING))));
+                    ((Horse)horse).getInventory().setArmor(new ItemStack(Material.valueOf(finalCont.get(this.hArmor, PersistentDataType.STRING))));
                   }  
                 if (finalCont.has(this.hColor, PersistentDataType.STRING))
-                  ((Horse)builder).setColor(Horse.Color.valueOf((String)finalCont.get(this.hColor, PersistentDataType.STRING))); 
+                  ((Horse)builder).setColor(Horse.Color.valueOf(finalCont.get(this.hColor, PersistentDataType.STRING)));
                 if (finalCont.has(this.hAppearance, PersistentDataType.STRING))
-                  ((Horse)builder).setStyle(Horse.Style.valueOf((String)finalCont.get(this.hAppearance, PersistentDataType.STRING))); 
+                  ((Horse)builder).setStyle(Horse.Style.valueOf(finalCont.get(this.hAppearance, PersistentDataType.STRING)));
                 getStatsFromContainer(builder, finalCont);
                 builder.setTamed(true);
                 builder.getInventory().setSaddle(freshSaddle);
@@ -114,7 +114,7 @@ public abstract class AbstractModernHorseHandler extends AbstractHorseHandler {
           if (isColliding(packaged))
             return false; 
           if (this.ph.getConfig().getBoolean("AutoMount"))
-            packaged.addPassenger((Entity)player); 
+            packaged.addPassenger(player);
           packaged.removePotionEffect(PotionEffectType.INVISIBILITY);
           return true;
         } 
@@ -140,10 +140,10 @@ public abstract class AbstractModernHorseHandler extends AbstractHorseHandler {
   }
   
   public void getStatsFromContainer(AbstractHorse h, PersistentDataContainer cont) {
-    Double jumpStrength = cont.has(this.hJumpStrength, PersistentDataType.DOUBLE) ? (Double)cont.get(this.hJumpStrength, PersistentDataType.DOUBLE) : Double.valueOf(0.0D);
-    Double maxHealth = cont.has(this.hMaxHealth, PersistentDataType.DOUBLE) ? (Double)cont.get(this.hMaxHealth, PersistentDataType.DOUBLE) : Double.valueOf(0.0D);
-    Double currentHealth = cont.has(this.hCurrentHealth, PersistentDataType.DOUBLE) ? (Double)cont.get(this.hCurrentHealth, PersistentDataType.DOUBLE) : Double.valueOf(0.0D);
-    Double speed = cont.has(this.hSpeed, PersistentDataType.DOUBLE) ? (Double)cont.get(this.hSpeed, PersistentDataType.DOUBLE) : Double.valueOf(0.0D);
+    Double jumpStrength = cont.has(this.hJumpStrength, PersistentDataType.DOUBLE) ? cont.get(this.hJumpStrength, PersistentDataType.DOUBLE) : Double.valueOf(0.0D);
+    Double maxHealth = cont.has(this.hMaxHealth, PersistentDataType.DOUBLE) ? cont.get(this.hMaxHealth, PersistentDataType.DOUBLE) : Double.valueOf(0.0D);
+    Double currentHealth = cont.has(this.hCurrentHealth, PersistentDataType.DOUBLE) ? cont.get(this.hCurrentHealth, PersistentDataType.DOUBLE) : Double.valueOf(0.0D);
+    Double speed = cont.has(this.hSpeed, PersistentDataType.DOUBLE) ? cont.get(this.hSpeed, PersistentDataType.DOUBLE) : Double.valueOf(0.0D);
     setHorseStats(h, jumpStrength, maxHealth, currentHealth, speed);
   }
 }

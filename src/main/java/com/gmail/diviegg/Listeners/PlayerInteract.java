@@ -23,7 +23,7 @@ import org.bukkit.inventory.PlayerInventory;
 public class PlayerInteract implements Listener {
   private final AbstractHorseHandler horseHandler = PortableHorses.getVersionHandler().getHorseHandler();
   
-  private final IGeneralUtiility generalUtility = (IGeneralUtiility)PortableHorses.getVersionHandler().getGeneralUtil();
+  private final IGeneralUtiility generalUtility = PortableHorses.getVersionHandler().getGeneralUtil();
   
   @EventHandler(priority = EventPriority.HIGHEST)
   public void onSaddleUse(PlayerInteractEvent e) {

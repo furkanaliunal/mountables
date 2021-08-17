@@ -3,7 +3,6 @@ package com.gmail.diviegg;
 import com.gmail.diviegg.Commands.CommandBase;
 import com.gmail.diviegg.Commands.CommandCall;
 import com.gmail.diviegg.Commands.CommandReload;
-import com.gmail.diviegg.Commands.SubCommand;
 import com.gmail.diviegg.Commands.TabComplete;
 import com.gmail.diviegg.External.CombatLog.Listener.CombatLogListener;
 import com.gmail.diviegg.Listeners.BlockPlace;
@@ -16,20 +15,15 @@ import com.gmail.diviegg.Versions.Wrappers.Modern.Wrapper1_15;
 import com.gmail.diviegg.Versions.Wrappers.Modern.Wrapper1_16;
 import com.gmail.diviegg.Versions.Wrappers.Modern.Wrapper1_17;
 import com.gmail.diviegg.Versions.Wrappers.VersionHandler;
-import com.gmail.diviegg.bstats.bukkit.Metrics;
 import com.sk89q.worldguard.WorldGuard;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
 import org.bukkit.Bukkit;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.TabCompleter;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.event.Listener;
 import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionDefault;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -64,17 +58,17 @@ public class PortableHorses extends JavaPlugin {
   
   public void onEnable() {
     checkWorldGuard();
-    Metrics metrics = new Metrics(this, 10593);
+    //Metrics metrics = new Metrics(this, 10593);
     ph = this;
     setupPerms();
     commandBase = new CommandBase();
-    getCommand("PortableHorses").setExecutor((CommandExecutor)commandBase);
-    commandBase.registerCommand("call", (SubCommand)new CommandCall() {
+    getCommand("PortableHorses").setExecutor(commandBase);
+    commandBase.registerCommand("call", new CommandCall() {
         
         });
-    commandBase.registerCommand("reload", (SubCommand)new CommandReload());
-    getCommand("PortableHorses").setTabCompleter((TabCompleter)new TabComplete());
-    getServer().getPluginManager().registerEvents((Listener)new CombatLogListener(), (Plugin)this);
+    commandBase.registerCommand("reload", new CommandReload());
+    getCommand("PortableHorses").setTabCompleter(new TabComplete());
+    getServer().getPluginManager().registerEvents(new CombatLogListener(), this);
     String version = Bukkit.getServer().getClass().getPackage().getName().split(Pattern.quote("."))[3];
     switch (version) {
       case "v1_17_R1":
@@ -83,18 +77,18 @@ public class PortableHorses extends JavaPlugin {
         registerListeners();
         break;
       case "v1_16_R3":
-        versionHandler = (VersionHandler)new Wrapper1_16();
+        versionHandler = new Wrapper1_16();
         getLogger().info("Version " + version + " detected.");
         registerListeners();
         break;
       case "v1_15_R1":
-        versionHandler = (VersionHandler)new Wrapper1_15();
+        versionHandler = new Wrapper1_15();
         getLogger().info("Version " + version + " detected.");
         registerListeners();
         break;
       case "v1_13_R2":
       case "v1_12_R1":
-        versionHandler = (VersionHandler)new Wrapper1_12();
+        versionHandler = new Wrapper1_12();
         getLogger().info("Version " + version + " detected.");
         registerListeners();
         this.isServerLegacy = true;
@@ -102,7 +96,7 @@ public class PortableHorses extends JavaPlugin {
       default:
         getLogger().severe("Version " + version + " detected.");
         getLogger().severe("Unsupported Server Version");
-        Bukkit.getPluginManager().disablePlugin((Plugin)this);
+        Bukkit.getPluginManager().disablePlugin(this);
         break;
     } 
     configSetup();
@@ -110,11 +104,11 @@ public class PortableHorses extends JavaPlugin {
   }
   
   private void registerListeners() {
-    getServer().getPluginManager().registerEvents((Listener)new BlockPlace(), (Plugin)this);
-    getServer().getPluginManager().registerEvents((Listener)new InventoryClick(), (Plugin)this);
-    getServer().getPluginManager().registerEvents((Listener)new PlayerInteract(), (Plugin)this);
-    getServer().getPluginManager().registerEvents((Listener)new PlayerInteractEntity(), (Plugin)this);
-    getServer().getPluginManager().registerEvents((Listener)new VehicleExitEvent(), (Plugin)this);
+    getServer().getPluginManager().registerEvents(new BlockPlace(), this);
+    getServer().getPluginManager().registerEvents(new InventoryClick(), this);
+    getServer().getPluginManager().registerEvents(new PlayerInteract(), this);
+    getServer().getPluginManager().registerEvents(new PlayerInteractEntity(), this);
+    getServer().getPluginManager().registerEvents(new VehicleExitEvent(), this);
   }
   
   private void checkWorldGuard() {

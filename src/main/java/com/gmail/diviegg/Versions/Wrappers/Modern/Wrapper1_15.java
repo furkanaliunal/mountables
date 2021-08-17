@@ -12,10 +12,10 @@ public class Wrapper1_15 implements VersionHandler {
   GeneralUtility1_15 generalUitility = new GeneralUtility1_15();
   
   public AbstractHorseHandler getHorseHandler() {
-    return (AbstractHorseHandler)this.horseHandler;
+    return this.horseHandler;
   }
   
   public AbstractGeneralUtility getGeneralUtil() {
-    return (AbstractGeneralUtility)this.generalUitility;
+    return this.generalUitility;
   }
 }
